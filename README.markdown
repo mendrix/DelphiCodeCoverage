@@ -42,7 +42,7 @@ There is also a CodeCoverage_summary.html file that summarizes the coverage and 
 
 ### XML output (specify `-xml` as a parameter)
 A summary xml report called CodeCoverage_summary.xml is generated in the output directory that is compatible with the 
-xml output from EMMA.
+xml output from EMMA. Use in combination with the switches '-xmllines' and '-xmlgenerics' for detailed code coverage per line.
 
 ### Emma output (specify `-emma` as a parameter)
 It is now possible to create EMMA compatible output which allows for using emma to merge multiple code coverage runs as 
@@ -83,6 +83,8 @@ unfinished form on my harddrive for more than a year. Finally it slipped out.
     <tr><td><code>-emma</code></td><td>Generate emma coverage output - Generate emma output as 'coverage.es' in the output directory.</td></tr>
     <tr><td><code>-meta</code></td><td>Generate separate meta and coverage files when generating emma output - 'coverage.em' and 'coverage.ec' will be generated for meta data and coverage data. NOTE: Needs -emma as well.</td></tr>
     <tr><td><code>-xml</code></td><td>Generate xml coverage output - Generate xml output as 'CodeCoverage_Summary.xml' in the output directory.</td></tr>
+	<tr><td><code>-xmllines</code></td><td>Adds lines coverage to the generated xml coverage output.</td></tr>
+	<tr><td><code>-xmlgenerics</code></td><td>Combines lines coverage for multiple occurrences of the same filename (especially usefull in case of generic classes).</td></tr>	
     <tr><td><code>-html</code></td><td>Generate html coverage output - Generate html output as 'CodeCoverage_Summary.html' in the output directory.</td></tr>
     <tr><td><code>-uns dll_or_exe unitname [unitname_2]</code></td><td>Create a separate namespace (the namespace name will be the name of the module without extension) ONLY for the listed units within the module</td></tr>
     <tr><td><code>-mns name dll_or_exe [dll_or_exe_2]</code></td><td>Create a separate namespace with the given name for the listed dll:s. All modules loaded in those module(s) will be namespaced.</td></tr>
