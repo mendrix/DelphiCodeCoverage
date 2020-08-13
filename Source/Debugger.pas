@@ -906,7 +906,7 @@ begin
             end
             else
             begin
-              FLogManager.Log('BreakPoint already cleared - BreakPoint in source?');
+              FLogManager.Log('BreakPoint already cleared - multi threaded code (or breakPoint in source?)');
 
               //Multi threaded execution of exactly the same instruction, make sure
               //we rewind to the previous instruction (the op code is already
