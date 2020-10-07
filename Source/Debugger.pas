@@ -13,7 +13,7 @@ unit Debugger;
 interface
 
 uses
-  Classes,
+  System.Classes,
   JclDebug,
   JwaWinBase,
   JwaWinType,
@@ -104,8 +104,8 @@ function RealReadFromProcessMemory(
 implementation
 
 uses
-  ActiveX,
-  SysUtils,
+  Winapi.ActiveX,
+  System.SysUtils,
   JwaNtStatus,
   JwaWinNT,
 {$IFDEF madExcept}
@@ -626,7 +626,7 @@ begin
             UnitName := AMapScanner.SourceNameFromAddr(MapLineNumber.VA);
             if ExtractFileExt(UnitName) = '' then
               UnitName := ChangeFileExt(UnitName, '.pas');
-            UnitModuleName := ChangeFileExt(UnitName, '');
+            UnitModuleName := ExtractFileName(ChangeFileExt(UnitName, ''));
 
             if (AModuleList.IndexOf(UnitModuleName) > -1)
             and (AModuleList.IndexOf(ModuleName) > -1)
@@ -677,7 +677,9 @@ begin
       end;
 
       for UnitModuleName in SkippedModules do
+      begin
         FLogManager.Log('Module ' + UnitModuleName + ' skipped');
+      end;
     finally
       SkippedModules.Free;
     end;

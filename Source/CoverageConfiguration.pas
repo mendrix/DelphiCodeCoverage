@@ -123,18 +123,14 @@ type
 implementation
 
 uses
+  Winapi.Windows,
   System.StrUtils,
+  System.IOUtils,
+  System.Masks,
+  Xml.XMLDoc,
   JclFileUtils,
-  {$IF CompilerVersion < 21}
-  IOUtilsD9,
-  {$ELSE}
-  IOUtils,
-  {$ENDIF}
   LoggerTextFile,
-  LoggerAPI,
-  XMLDoc,
-  Windows,
-  Masks;
+  LoggerAPI;
 
 function Unescape(const AParameter: string): string;
 var

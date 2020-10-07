@@ -70,9 +70,9 @@ type
 implementation
 
 uses
-  StrUtils,
-  SysUtils,
-  Math,
+  System.StrUtils,
+  System.SysUtils,
+  System.Math,
   JclFileUtils,
   Generics.Collections, CoverageStats;
 
