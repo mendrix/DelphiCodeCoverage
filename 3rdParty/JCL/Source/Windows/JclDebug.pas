@@ -152,6 +152,7 @@ type
     class function MapStringToFileName(MapString: PJclMapString): string;
     class function MapStringToModuleName(MapString: PJclMapString): string;
     class function MapStringToStr(MapString: PJclMapString; IgnoreSpaces: Boolean = False): string;
+    class function MapStringToSourceFile(MapString: PJclMapString): string; static;
     property LinkerBug: Boolean read FLinkerBug;
     property LinkerBugUnitName: string read GetLinkerBugUnitName;
     property Stream: TJclFileMappingStream read FStream;
@@ -1432,6 +1433,33 @@ begin
         Inc(P);
   end;
   SetString(Result, MapString, P - MapString);
+end;
+
+class function TJclAbstractMapParser.MapStringToSourceFile(MapString: PJclMapString): string;
+var
+  P: PJclMapString;
+begin
+  if MapString = nil then
+  begin
+    Result := '';
+    Exit;
+  end;
+  if MapString^ = '(' then
+  begin
+    Inc(MapString);
+    P := MapString;
+    while (P^ <> #0) and not (P^ in [')', #10, #13]) do
+      Inc(P);
+  end
+  else
+  begin
+    P := MapString;
+    while (P^ <> #0) and (P^ > ' ') do
+      Inc(P);
+  end;
+  SetString(Result, MapString, P - MapString);
+  if Result.Contains('(') then
+    Result := Result.Substring(Result.IndexOf('(')+1, Result.IndexOf(')') - Result.IndexOf('(') - 1)
 end;
 
 function IsDecDigit(P: PJclMapString): Boolean; {$IFDEF SUPPORTS_INLINE}inline;{$ENDIF}
@@ -4696,7 +4724,7 @@ begin
     begin
       UnitNameWithoutUnitscope := UnitName;
       Delete(UnitNameWithoutUnitscope, 1, Pos('.', UnitNameWithoutUnitscope));
-      if Pos(UnitNameWithoutUnitscope + '.', FixedProcedureName) = 1 then
+      if Pos(StrLower(UnitNameWithoutUnitscope) + '.', StrLower(FixedProcedureName)) = 1 then
         FixedProcedureName := Copy(FixedProcedureName, Length(UnitNameWithoutUnitscope) + 2, Length(FixedProcedureName) - Length(UnitNameWithoutUnitscope) - 1);
     end;
 

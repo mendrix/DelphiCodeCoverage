@@ -623,7 +623,13 @@ begin
 
           if (ModuleName = ModuleNameFromAddr) then
           begin
-            UnitName := AMapScanner.SourceNameFromAddr(MapLineNumber.VA);
+            //In the Delphi map-files we have entries like:
+            //Line numbers for Next.Account.Repository(Next.Core.Promises.pas) segment .text
+            //
+            //These refer to the file between () and to the one in front, which
+            //SourceNameFromAddr refers to. No idea if this is a bug in JCL, but
+            //we can solve our issue by refering to the unitname
+            UnitName := AMapScanner.MapStringToSourceFile(MapLineNumber.UnitName);
             if ExtractFileExt(UnitName) = '' then
               UnitName := ChangeFileExt(UnitName, '.pas');
             UnitModuleName := ExtractFileName(ChangeFileExt(UnitName, ''));
@@ -635,7 +641,13 @@ begin
               FLogManager.Log(
                 'Setting BreakPoint for module: ' + ModuleName +
                 ' unit ' + UnitName +
-                ' addr:' + IntToStr(LineIndex));
+                ' moduleName: ' + ModuleName +
+                ' unitModuleName: ' + UnitModuleName +
+                ' addr:' + IntToStr(LineIndex) +
+                ' VA:' + IntToHex(MapLineNumber.VA) +
+                ' Base:' + IntToStr(AModule.Base) +
+                ' Address: ' + IntToHex(Integer(AddressFromVA(MapLineNumber.VA, AModule.Base)))
+                );
 
               BreakPoint := FBreakPointList.BreakPointByAddress[(AddressFromVA(MapLineNumber.VA, AModule.Base))];
               if not Assigned(BreakPoint) then
